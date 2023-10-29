@@ -1,0 +1,43 @@
+storage_file = "E:\\my_work\\Code\\storage.txt"
+storage = []
+
+input_correct = False
+while not input_correct:
+    login = input("Hello! Would you like to sign in or sign up?: ")
+    if login == "sign up":
+        new_user = input("Please, enter your new username: ")
+        new_password = input("Please, enter your new password: ")
+        def registration(name, password):
+            storage.append((name, password))
+        registration(new_user, new_password)
+        with open(storage_file, "a") as file:
+            for user in storage:
+                file.write(f"Username: {user[0]}, Password: {user[1]}\n")
+                print("You have successfully signed up!")
+                input_correct = True
+
+    elif login == "sign in":
+        user_found = False
+        password_found = True
+        while not user_found:
+            input_user = input("Please, enter your username: ")
+            with open(storage_file,"r") as file:
+                for line in file:
+                    parts = line.strip().split(", ")
+                    if len(parts) == 2:
+                        username = parts[0].split(": ")[1]
+                        password = parts[1].split(": ")[1]
+                        if input_user == username:
+                            user_found = True
+                            password_found = False
+                            while not password_found:
+                                input_password = input("Please, enter your password: ")
+                                if input_password == password:
+                                    print("You have successfully signed in!")
+                                    password_found = True
+                                    input_correct = True
+                                else:
+                                    print("Incorrect password!")
+            if not user_found:
+                print("User was not found!")
+    else: print("Please enter 'sign in' or 'sign up'!")
